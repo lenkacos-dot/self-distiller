@@ -25,9 +25,11 @@ Self-Distiller-Skill/
 ├── raw/                  ← 你的原始材料（LLM 只读）
 │   └── material_index.md
 ├── wiki/                 ← 蒸馏后的画像（LLM 全权维护）
-│   ├── _index.md         ← 目录
-│   ├── 01-cognition.md   ← 认知偏好维度页面
-│   └── contradictions.md ← 矛盾记录
+|   ├── _index.md         ← 目录
+|   ├── 01-cognition.md   ← 认知偏好维度页面
+|   ├── 04-voice.md       ← **说话风格模型（⭐ 新增）**
+|   ├── 05-taste.md       ← **个人品味模型（⭐ 新增）**
+|   └── contradictions.md ← 矛盾记录
 └── .state/               ← 内部状态
     └── checkpoint.json
 ```
