@@ -1,8 +1,6 @@
 {
-  "last_session": null,
-  "total_tokens_used": 0,
-  "dimensions": ["01-cognition"],
-  "materials_processed": [],
-  "materials_pending": [],
-  "interrupted": false
+  "version": 1,
+  "last_import": null,
+  "total_entries": 0,
+  "notes": "Clean template. Import your own materials to begin."
 }

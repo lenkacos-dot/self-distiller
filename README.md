@@ -1,129 +1,86 @@
-# Self-Distiller — Self-Distillation Knowledge Base Skill
+# Self-Distiller — 自我蒸馏知识库
 
-> A specialized instance of the **Karpathy LLM Wiki pattern** for self-knowledge.
-> Shares the same architecture (three-layer + incremental workflow) as LLM Wiki, just a different domain:
-> - LLM Wiki → your **external knowledge** (tools, configs, projects)
-> - Self-Distiller → your **self-knowledge** (cognition, decisions, values)
-> Both are independent — use one or both as you like.
->
-> **[中文版说明 → README.zh.md](./README.zh.md)**
+> **让任何 AI Agent 持续编译、维护一个关于「你是谁」的结构化知识库。**
+> Let any AI Agent continuously compile and maintain a structured knowledge base about who you are.
 
 ---
 
-## What is Self-Distiller?
+## 中文说明
 
-An agent-agnostic Skill that lets **any AI agent** (Hermes, Claude Code, Crush, local Ollama, etc.) continuously compile and maintain a structured knowledge base about **who you are**.
+### 这是什么？
+把你的日记、聊天记录、笔记等自我相关材料，提炼成按维度组织的个人认知图谱。每条认知都带着置信度、来源引用和矛盾标注。
 
-**Input**: diaries, notes, conversation logs, any self-related material
-**Output**: dimension-organized Wiki pages with confidence scores, source citations, and contradiction markers
-**Data**: plain Markdown + JSON, all stored locally, never uploaded to any cloud
+### 怎么用？
+1. **把这个文件夹放到你的电脑上**（任何位置都行）
+2. **告诉 AI Agent**（Hermes / Claude Code / Codex）：
+   > "用 Self-Distiller Skill 蒸馏我的信息"
+3. **提供材料** — 发一段日记、一份聊天记录、一篇文章给你
+4. **持续积累** — 每次导入新材料，画像自动更新
 
----
-
-## Relationship with LLM Wiki
-
-Self-Distiller is a **specialization** of the Karpathy LLM Wiki pattern. They share the same architecture but serve different domains:
-
-| | LLM Wiki | Self-Distiller |
-|---|---|---|
-| Domain | Your **external knowledge** | Your **self-knowledge** |
-| Content | Tool configs, project notes, automations | Cognition, decisions, values, emotions |
-| Dependency | Independent of Self-Distiller | **Independent of LLM Wiki** |
-
-You can use Self-Distiller standalone, or pair it with LLM Wiki for complementary knowledge management.
-
----
-
-## Core Features
-
-### 1. Preserves Complexity, No Simplistic Labels
-
-Other systems reduce you to tags: "introverted, rational, risk-averse". But people aren't tags.
-
-Self-Distiller keeps contradictions visible:
-- "I only put money in deposits" today, "I quit my job to start a business" tomorrow → marked as **context-dependent contradiction** (conservative in finance, adventurous in career)
-- Used to prefer solitude, now enjoys socializing → **timeline marker**, shows growth not contradiction
-- Self-assessed as "introverted" but friends say "extroverted" → **preserves both perspectives**
-
-### 2. Every Insight Has a Traceable Source
-
-Not AI guessing. Every Wiki entry is bound to a **material ID + original text location**:
-
-> "User prefers tables for comparison (Source: diary 2026-06-29, para 3 + Xiaohongshu post 2026-06-30) → Confidence: High (two independent sources)"
-
-You can always ask "Why do you think that?" and the AI will show you the original material.
-
-### 3. Confidence System
-
-| Level | Meaning |
-|-------|---------|
-| **High** | 2+ independent sources corroborate |
-| **Medium** | 1 source + logical reasoning (Phase 2) |
-| **Low** | Single mention or inferred — AI notes "speculative" |
-
-### 4. Agent-Agnostic
-
-Pure file I/O — doesn't depend on any specific AI platform.
-- Hermes Agent ✅
-- Claude Code / Codex CLI ✅
-- Crush ✅
-- Your local Ollama Qwen ✅
-
-Any LLM that can `read_file` / `write_file` can operate it.
-
----
-
-## Directory Structure
-
+### 文件结构
 ```
-self-distiller/
-├── SKILL.md                  ← Core instructions (tell the AI how to work)
-├── wiki/
-│   ├── _index.md             ← Index (initially empty)
-│   ├── 01-cognition.md       ← Dimension template: cognition (Phase 1)
-│   └── contradictions.md     ← Contradiction tracker (initially empty)
-├── raw/
-│   └── material_index.md     ← Source material index (read-only)
-├── .state/
-│   └── checkpoint.json       ← Checkpoint + token log
-└── reports/self-check/       ← Self-check report output
+Self-Distiller-Skill/
+├── SKILL.md              ← Agent 操作规则（不要修改）
+├── README.md             ← 本文件（操作手册）
+├── raw/                  ← 你的原始材料（LLM 只读）
+│   └── material_index.md
+├── wiki/                 ← 蒸馏后的画像（LLM 全权维护）
+│   ├── _index.md         ← 目录
+│   ├── 01-cognition.md   ← 认知偏好维度页面
+│   └── contradictions.md ← 矛盾记录
+└── .state/               ← 内部状态
+    └── checkpoint.json
 ```
 
-## How to Use
+### 维度体系
+| 阶段 | 维度 | 关注什么 |
+|------|------|---------|
+| Phase 1 | 🧠 认知偏好 | 怎么学、怎么想、怎么处理信息 |
+| Phase 2 | 🤔 决策模式 | 理性 vs 直觉、风险偏好 |
+| Phase 2 | 💎 价值体系 | 什么重要、什么优先 |
+| Phase 3 | 🎭 行为/情绪/能力/关系/动机/盲区 | 完整人生画像 |
 
-### Three Actions
-
-**Ingest** — Drop a diary entry, tell the AI: "Distill this into my self-portrait."
-→ AI reads the material → extracts cognitive insights → writes to Wiki pages.
-
-**Query** — Ask about yourself: "What's my decision-making style?"
-→ AI searches the Wiki, synthesizes an answer, cites sources.
-
-**Self-Check** — "Run a self-check."
-→ AI scans all entries' confidence and freshness → outputs a report → you decide what to fix (AI never auto-modifies).
-
-## Getting Started
-
-1. Put this directory where your AI can access it
-2. Tell your AI: "Set up the Self-Distiller skill, I want to start using it"
-3. The AI will read `SKILL.md`, understand the structure, and confirm readiness
-4. Start ingesting materials!
+### 隐私
+- 所有数据存在本地，不上传任何云端
+- 可随时删除整个文件夹彻底清除
 
 ---
 
-## Token Cost Estimate
+## English Guide
 
-| Operation | Token Range | Notes |
-|-----------|------------|-------|
-| Initialization | ~500 | Reading schema + creating directories |
-| Import 1 material | 2,000~8,000 | Read + compare + write Wiki |
-| Query | 300~1,500 | Read index + entries + answer |
-| Self-check | 1,500~5,000 | Scan metadata + generate report |
+### What is this?
+A structured knowledge base that continuously distills who you are — your cognition, decisions, values, behaviors — from your journals, chats, notes, and any self-related materials.
 
-At DeepSeek V4 Flash pricing (¥0.5/M input, ¥2/M output), each operation costs well under ¥0.01. File I/O is handled by the agent runtime (free).
+### How to use?
+1. **Place this folder anywhere on your machine**
+2. **Tell your AI Agent** (Hermes / Claude Code / Codex):
+   > "Use Self-Distiller Skill to distill my information"
+3. **Feed materials** — share a journal entry, chat log, or note
+4. **Accumulate** — each import enriches your digital persona
 
----
+### File Structure
+```
+Self-Distiller-Skill/
+├── SKILL.md              ← Agent instructions (do not edit)
+├── README.md             ← This file (user manual)
+├── raw/                  ← Your raw materials (LLM read-only)
+│   └── material_index.md
+├── wiki/                 ← Distilled persona (LLM-managed)
+│   ├── _index.md         ← Table of contents
+│   ├── 01-cognition.md   ← Cognitive preferences
+│   └── contradictions.md ← Contradiction log
+└── .state/               ← Internal state
+    └── checkpoint.json
+```
 
-## License
+### Dimension System
+| Phase | Dimension | Focus |
+|-------|-----------|-------|
+| Phase 1 | 🧠 Cognition | Learning style, thinking patterns, info processing |
+| Phase 2 | 🤔 Decision | Rational vs intuitive, risk preference |
+| Phase 2 | 💎 Values | What matters, priorities, principles |
+| Phase 3 | 🎭 Full profile | Behavior, emotion, skills, relationships, motivation, blind spots |
 
-MIT. Based on the Karpathy LLM Wiki pattern and inspired by [Hatari130/podcast-bridge](https://github.com/Hatari130/podcast-bridge).
+### Privacy
+- All data stays local, zero cloud upload
+- Delete the entire folder anytime to wipe everything
