@@ -1,3 +1,9 @@
+---
+name: self-distiller
+description: >-
+  Continuously compile and maintain a structured knowledge base about who the user is — cognition, decisions, values, behaviors, emotions, skills, relationships, motivation, and blind spots. Distill insights from any platform data: chat logs (WeChat/QQ/Telegram/iMessage), music history (QQ Music/Spotify/Apple Music), video history (YouTube/Bilibili), blog posts, reading history (Kindle/WeRead), code (GitHub), browser history, journals, and notes. Use when the user wants to build a personal digital persona, distill their own information, analyze their communication style or thinking patterns, or extract self-knowledge from social media or app data.
+---
+
 # Self-Distiller — 自我蒸馏知识库 Skill
 
 > 基于 Karpathy LLM Wiki 模式的**特化实例**。
@@ -23,6 +29,15 @@ self-wiki/
 Phase 1: 认知偏好（学习方式、信息处理、注意力模式）
 Phase 2: + 决策模式、价值体系
 Phase 3: + 行为模式、情绪模式、能力图谱、关系模式、动机驱动、盲区&成长
+
+### 当前已实现维度
+
+| 编号 | 维度 | 说明 |
+|------|------|------|
+| 01 | 认知偏好 | 思维模式、学习风格 |
+| 04 | 说话风格 | 语调、用词、表情习惯 |
+| 05 | 个人品味 | 番剧、音乐、审美 |
+| **06** | **人生记忆** | **真实故事、经历、感受** |
 
 ## 工作流
 
