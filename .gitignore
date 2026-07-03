@@ -1,0 +1,26 @@
+# Self-Distiller — 隐私安全 .gitignore
+# 此文件保护个人隐私数据不被误提交到 Git
+
+# ===== 原始材料（含真实姓名、电话、邮箱、聊天记录） =====
+raw/M001-resume.md
+raw/M002-*.txt
+raw/M003-*.md
+raw/M004-*.md
+raw/M005-*.md
+
+# ===== 加密版本（.enc 版本保留在 git 里） =====
+# 如果使用 encrypt-raw.sh，解密后生成明文，不解密不生成
+
+# ===== 系统文件 =====
+.DS_Store
+Thumbs.db
+
+# ===== 编辑器临时文件 =====
+*.swp
+*.swo
+*~
+
+# ===== 加密密钥（永远不要提交） =====
+.enc_key
+*.key
+*.pem
