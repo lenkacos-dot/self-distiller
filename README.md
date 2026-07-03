@@ -1,99 +1,117 @@
-# Self-Distiller — 自我蒸馏知识库
+# Self-Distiller — 分享版（模板）
 
-> **让任何 AI Agent 持续编译、维护一个关于「你是谁」的结构化知识库。**
-> Let any AI Agent continuously compile and maintain a structured knowledge base about who you are.
-
----
-
-## 中文说明
-
-### 这是什么？
-把你的日记、聊天记录、音乐歌单、浏览历史、博客文章、GitHub 代码等任何线上数据，**提炼成按维度组织的个人认知图谱**。每条认知都带着置信度、来源引用和矛盾标注。
-
-**不管数据来自哪个平台** — 微信、QQ、微博、小红书、知乎、B站、YouTube、Spotify、QQ音乐、Kindle、GitHub……Agent 都能吸收。
-
-### 怎么用？
-1. **把这个文件夹放到你的电脑上**（任何位置都行）
-2. **告诉 AI Agent**（Hermes / Claude Code / Codex）：
-   > "帮我用 Self-Distiller 蒸馏我的信息"
-3. **提供材料** — 发一段日记、一份聊天记录、一篇博客、一个歌单截图……
-4. **持续积累** — 每次导入新材料，画像自动更新
-
-### 文件结构
-```
-Self-Distiller-Skill/
-├── SKILL.md              ← Agent 操作规则
-├── README.md             ← 本文件（操作手册）
-├── raw/                  ← 你的原始材料（LLM 只读）
-│   └── material_index.md
-├── wiki/                 ← 蒸馏后的画像（LLM 全权维护）
-│   ├── _index.md         ← 目录
-│   ├── 01-cognition.md   ← 认知偏好维度页面
-│   └── contradictions.md ← 矛盾记录
-└── .state/               ← 内部状态
-    └── checkpoint.json
-```
-
-### 不同平台能提炼什么？
-
-| 平台类型 | 平台举例 | 能了解你什么 |
-|---------|---------|------------|
-| 📱 聊天软件 | 微信、QQ、Telegram、iMessage | 沟通风格、社交模式、情绪、决策 |
-| 📝 内容平台 | 知乎、微博、小红书、博客 | 思考方式、价值观、兴趣领域 |
-| 🎵 音乐平台 | QQ音乐、网易云、Spotify、Apple Music | 情绪模式、品味偏好 |
-| 🎬 视频平台 | YouTube、B站、抖音、Netflix | 学习风格、注意力模式 |
-| 📚 阅读平台 | 微信读书、Kindle、豆瓣 | 知识结构、学习偏好 |
-| 💻 代码平台 | GitHub、GitLab | 编程习惯、问题解决风格 |
-| 🌐 浏览器 | Chrome/Safari 历史 | 信息获取习惯、好奇心模式 |
-
-### 维度体系
-| 阶段 | 维度 | 关注什么 |
-|------|------|---------|
-| Phase 1 | 🧠 认知偏好 | 怎么学、怎么想、怎么处理信息 |
-| Phase 2 | 🤔 决策模式 | 理性 vs 直觉、风险偏好 |
-| Phase 2 | 💎 价值体系 | 什么重要、什么优先 |
-| Phase 3 | 🎭 行为/情绪/能力/关系/动机/盲区 | 完整人生画像 |
-
-### 隐私
-- 所有数据存在本地，不上传任何云端
-- 可随时删除整个文件夹彻底清除
+> **让任何 AI Agent 持续编译、维护一个关于「你自己」的结构化知识库。**
+> **此版本为分享版模板，不含任何个人数据。导入你自己的材料后再使用。**
 
 ---
 
-## English Guide
+## 这是什么
 
-### What is this?
-A structured knowledge base that continuously **distills who you are** — your cognition, decisions, values, behaviors — from your chats, music playlists, browsing history, blog posts, GitHub code, and any online data.
+把你的日记、聊天记录、音乐歌单、浏览历史、博客等任何数据，**提炼成按维度组织的个人认知图谱**。每条认知都带着置信度、来源引用和矛盾标注。
 
-**No matter which platform** — WeChat, QQ, Weibo, Xiaohongshu, Zhihu, Bilibili, YouTube, Spotify, QQ Music, Kindle, GitHub… the Agent can absorb it.
+分享版 = 完整的工具链 + 空白模板，拿到就能用。
 
-### How to use?
-1. **Place this folder anywhere on your machine**
-2. **Tell your AI Agent** (Hermes / Claude Code / Codex):
-   > "Use Self-Distiller Skill to distill my information"
-3. **Feed materials** — share a journal, chat log, playlist, blog post…
-4. **Accumulate** — each import enriches your digital persona
+## 各部分功能对照
 
-### What each platform reveals
+```
+self-distiller-skill-分享版/
+│
+├── README.md                       ← 本文件。⭐ 使用说明 + 所有文件的功能解释
+│
+├── SKILL.md                        ← 🤖 [AI Agent 操作手册]。告诉 Hermes/Claude Code/Codex
+│                                     怎么读、写、更新这个知识库。
+│                                     🔧 模板文件，无需修改即可用。
+│
+├── wiki/                           ← 📖 [蒸馏后的画像]。你用起来后，AI 会在这里写入
+│   ├── _index.md                   ← 目录索引。🔧 模板
+│   ├── 01-cognition.md             ← 🧠 [认知偏好] — 怎么学、怎么想、怎么处理信息
+│   ├── 04-voice.md                 ← 🗣️ [说话风格] — 口语习惯、语气词、用词偏好
+│   ├── 05-taste.md                 ← 🎵 [品味偏好] — 音乐、视频、内容消费倾向
+│   ├── 06-memory.md                ← 📅 [人生记忆] — 经历、故事、重要节点
+│   └── contradictions.md           ← ⚠️ [矛盾记录] — 当新数据与旧认知冲突时记录在这里
+│
+│   ┌─────────────────────────────────────────────────────────────┐
+│   │ ⭐ 每个 wiki/ 文件都含模板表和示例行。你在 raw/ 放入材料  │
+│   │   后告诉 AI "运行 Self-Distiller"，它会自动填入你的数据。   │
+│   └─────────────────────────────────────────────────────────────┘
+│
+├── raw/                            ← 📦 [原始材料]。把你的原始数据放这里
+│   └── material_index.md           ← 材料清单模板。AI 读完材料后会更新它
+│
+├── academic-distillation.md        ← 🎓 [学术蒸馏模块]。把论文/学术写作风格萃取的完整指南
+│                                     - 写作风格提取（从你的论文审稿/回复中提炼风格）
+│                                     - 论文知识库（每篇论文结构化记录）
+│                                     - 4 个写作用例（引言起草、方法对比、相关工作、差距分析）
+│                                     🔧 模板，无需修改
+│
+├── paper-wiki/                     ← 📚 [论文知识库]。管理你读过/引用过的论文
+│   ├── _index.md                   ← 论文总索引。🔧 模板
+│   ├── papers/TEMPLATE.md          ← 单篇论文模板（问题、方法、结论、引用关系等 8 个字段）
+│   │                                   使用时复制一份，填你自己的论文信息
+│   └── topics/TEMPLATE.md          ← 主题对比模板（多篇论文对比、差距分析）
+│                                       使用时复制一份，填你要对比的论文
+│
+├── encrypt-raw.sh                  ← 🔐 [加密/解密工具]。AES-256-CBC
+│                                     lock：加密 raw/ 下的所有材料
+│                                     unlock：解密 raw/ 供 AI 读取
+│                                     🔧 直接可用，无需修改
+│                                     使用方式：./encrypt-raw.sh lock  或 unlock
+│
+├── Privacy_Guide_隐私安全说明.md    ← 🛡️ [隐私说明书]。解释：
+│                                     - 加密能防什么/不能防什么
+│                                     - 使用后的清理清单
+│                                     - 如何做自审
+│                                     🔧 直接可用
+│
+├── .gitignore                      ← Git 忽略规则。已配好：raw/、.enc_key、备份文件
+│                                     🔧 直接可用（如果你用 Git 管理）
+│
+├── reports/                        ← 📊 [自检报告目录]。你运行 Self-Distiller 后，
+│   └── self-check/                    AI 可能在这里写入完整性检查报告
+│
+└── raw/wiki/ 内的 .md 文件          ← 注意：这些是纯文本，AI 可直接读写。
+                                      而 raw/ 下的文件建议加密，用 encrypt-raw.sh 管理
+```
 
-| Platform Type | Examples | What it reveals |
-|--------------|----------|----------------|
-| 📱 Chat | WeChat, WhatsApp, Telegram | Communication style, relationships, emotions, decisions |
-| 📝 Writing | Blog, Medium, Zhihu | Thinking patterns, values, interests |
-| 🎵 Music | Spotify, Apple Music, QQ Music | Emotional patterns, taste preferences |
-| 🎬 Video | YouTube, Bilibili, TikTok | Learning style, attention patterns |
-| 📚 Reading | Kindle, Goodreads | Knowledge structure, learning preferences |
-| 💻 Code | GitHub, GitLab | Coding habits, problem-solving style |
-| 🌐 Browser | Chrome/Safari history | Information diet, curiosity patterns |
+### 工作流程
 
-### Dimension System
-| Phase | Dimension | Focus |
-|-------|-----------|-------|
-| Phase 1 | 🧠 Cognition | Learning style, thinking patterns, info processing |
-| Phase 2 | 🤔 Decision | Rational vs intuitive, risk preference |
-| Phase 2 | 💎 Values | What matters, priorities, principles |
-| Phase 3 | 🎭 Full profile | Behavior, emotion, skills, relationships, motivation, blind spots |
+```
+材料              raw/                   wiki/（提炼结果）
+ 📄 聊天记录 →  放这里         →  AI →  01-cognition.md
+ 🎵 歌单     →  建议加密        →  读取  →  04-voice.md
+ 📱 笔记     →                  →  分析  →  05-taste.md
+                                   提取  →  06-memory.md
+                                   写入  →   contradictions.md
+```
 
-### Privacy
-- All data stays local, zero cloud upload
-- Delete the entire folder anytime to wipe everything
+### 三步上手
+
+1. **复制材料**：把你的日记、聊天记录、歌单等丢进 `raw/`
+2. **加密**（可选但推荐）：`./encrypt-raw.sh lock` 加密原始材料
+3. **告诉 AI**：`帮我用 Self-Distiller 蒸馏我的信息`
+
+AI 会自动解密（`./encrypt-raw.sh unlock`）→ 读取 raw/ → 分析 → 写入 wiki/ → 重新加密。
+
+### 隐私说明
+
+| 数据层级 | 默认状态 | 谁能看到 |
+|---------|---------|---------|
+| raw/（原始材料） | 模板（空） | 你放入什么就是什么。建议用 encrypt-raw.sh 加密 |
+| wiki/（提炼结果） | 模板（示例行） | AI Agent 能读写。提炼结果是去识别化的总结 |
+| .gitignore | 已配置 | 阻止 raw/ 和密钥被提交到 Git |
+
+### 维度体系（模板）
+
+| 阶段 | 维度 | 功能 | 状态 |
+|------|------|------|------|
+| Phase 1 | 🧠 认知偏好 (01-cognition) | 怎么学、怎么想、怎么处理信息 | 🔧 模板待填充 |
+| Phase 1 | 🗣 说话风格 (04-voice) | 口语习惯、语气词、用词偏好 | 🔧 模板待填充 |
+| Phase 1 | 🎵 品味偏好 (05-taste) | 音乐、视频、内容消费倾向 | 🔧 模板待填充 |
+| Phase 1 | 📅 人生记忆 (06-memory) | 经历、故事、重要节点 | 🔧 模板待填充 |
+| Phase 2 | 🤔 决策模式 / 💎 价值体系 | 理性 vs 直觉 / 什么重要 | ⏳ 待扩展 |
+| Phase 3 | 🎭 完整画像 | 行为、情绪、能力等 | ⏳ 待扩展 |
+
+---
+
+**这是分享版模板，不含任何个人数据。** 放心分发、上传到 GitHub。
+导入你自己的材料后，AI 会自动填充 wiki/ 中你的个人画像。
