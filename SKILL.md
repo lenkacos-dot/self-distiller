@@ -111,3 +111,20 @@ Phase 3: + 行为模式、情绪模式、能力图谱、关系模式、动机驱
 | 💡 本地模型不出网 | 使用 Ollama/LM Studio 则数据不离开本机 |
 | ✅ 可随时删除 | 删除整个目录即可彻底清除 |
 | 📖 详见隐私说明书 | `Privacy_Guide_隐私安全说明.md` — 含加密能防/不能防的详细说明 |
+| 🎓 学术蒸馏模块 | `academic-distillation.md` + `paper-wiki/` — 学术写作风格蒸馏 + 论文知识库（见扩展模块） |
+
+---
+
+## 扩展模块
+
+本模板附带以下可选模块，按需启用：
+
+### 🎓 Academic Distillation — `academic-distillation.md`
+
+专为学术场景设计，包含两个独立子目标：
+
+1. **学术写作风格蒸馏** — 从你的论文草稿、导师批注中提取学术写作指纹，写入 self-wiki 的「说话风格」+「认知偏好」维度。让你用 AI 写论文时不跑调。
+2. **论文知识蒸馏** — 将文献结构化蒸馏到 `paper-wiki/` 知识库，每篇论文一页（研究问题/方法/发现/可引用片段/引用关系），写 Literature Review 和 Related Work 时直接引用。
+3. **论文写作用例** — 4 个组合用例，教你如何把风格蒸馏 + 论文知识蒸馏结合起来用（如："按我的学术风格写 Introduction"、"对比方法论"、"写 Related Work"、"分析论文缺陷"）
+
+使用：阅读 `academic-distillation.md`，按需创建 `paper-wiki/` 目录下的论文条目。
