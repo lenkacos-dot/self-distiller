@@ -7,6 +7,7 @@ raw/M002-*.txt
 raw/M003-*.md
 raw/M004-*.md
 raw/M005-*.md
+raw/*
 
 # ===== 加密版本（.enc 版本保留在 git 里） =====
 # 如果使用 encrypt-raw.sh，解密后生成明文，不解密不生成

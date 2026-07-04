@@ -106,7 +106,12 @@ do_decrypt() {
             -in "$f" -out "$dec_file" -pass "file:$KEY_FILE"
 
         # 解密成功，从清理列表移除
-        CLEANUP_FILES=("${CLEANUP_FILES[@]/$dec_file}")
+        local i
+        for i in "${!CLEANUP_FILES[@]}"; do
+            if [[ "${CLEANUP_FILES[$i]}" == "$dec_file" ]]; then
+                unset 'CLEANUP_FILES[$i]'
+            fi
+        done
         echo "🔓 已解密: $dec_file"
         count=$((count + 1))
     done < <(find "$RAW_DIR" -name '*.enc' -type f -print0)
