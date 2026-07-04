@@ -1,6 +1,8 @@
 {
-  "version": 1,
+  "version": "v4.5-template",
   "last_import": null,
   "total_entries": 0,
-  "notes": "Clean template. Import your own materials to begin."
+  "dimensions": ["01-cognition", "02-decision-mode", "03-value-system", "04-voice", "05-taste", "06-memory"],
+  "modules": ["academic-distillation", "paper-wiki", "reports", "encrypt-raw.sh", "privacy-guide"],
+  "notes": "Clean template v4.5. Import your own materials to begin. Has 6 dimension templates, paper-wiki, encrypt-raw v2, 5 advanced workflows in SKILL.md."
 }

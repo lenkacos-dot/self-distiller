@@ -16,15 +16,18 @@
 ```
 self-distiller-skill-分享版/
 │
-├── README.md                       ← 本文件。⭐ 使用说明 + 所有文件的功能解释
+├── README.md                       ← ⭐ 本文件。使用说明 + 所有文件的功能解释
 │
 ├── SKILL.md                        ← 🤖 [AI Agent 操作手册]。告诉 Hermes/Claude Code/Codex
 │                                     怎么读、写、更新这个知识库。
 │                                     🔧 模板文件，无需修改即可用。
+│                                     已包含：蒸馏流程 + 跨平台指南 + 5 个高级工作流
 │
 ├── wiki/                           ← 📖 [蒸馏后的画像]。你用起来后，AI 会在这里写入
 │   ├── _index.md                   ← 目录索引。🔧 模板
 │   ├── 01-cognition.md             ← 🧠 [认知偏好] — 怎么学、怎么想、怎么处理信息
+│   ├── 02-decision-mode.md         ← 🤔 [决策模式] — 怎么做决定、风险偏好
+│   ├── 03-value-system.md          ← ⚖️ [价值体系] — 什么重要、道德边界
 │   ├── 04-voice.md                 ← 🗣️ [说话风格] — 口语习惯、语气词、用词偏好
 │   ├── 05-taste.md                 ← 🎵 [品味偏好] — 音乐、视频、内容消费倾向
 │   ├── 06-memory.md                ← 📅 [人生记忆] — 经历、故事、重要节点
@@ -51,23 +54,22 @@ self-distiller-skill-分享版/
 │   └── topics/TEMPLATE.md          ← 主题对比模板（多篇论文对比、差距分析）
 │                                       使用时复制一份，填你要对比的论文
 │
+├── reports/                        ← 📊 [自检报告]
+│   └── README.md                   ← 自检流程说明。AI 执行自检后报告输出于此
+│
 ├── encrypt-raw.sh                  ← 🔐 [加密/解密工具]。AES-256-CBC
-│                                     lock：加密 raw/ 下的所有材料
-│                                     unlock：解密 raw/ 供 AI 读取
+│                                     支持子目录 + SIGINT 自动清理
+│                                     lock：加密 raw/；unlock：解密 raw/
 │                                     🔧 直接可用，无需修改
-│                                     使用方式：./encrypt-raw.sh lock  或 unlock
 │
 ├── Privacy_Guide_隐私安全说明.md    ← 🛡️ [隐私说明书]。解释：
 │                                     - 加密能防什么/不能防什么
 │                                     - 使用后的清理清单
 │                                     - 如何做自审
-│                                     🔧 直接可用
+│                                     🔧 直接可用（已去除个人路径，通用版本）
 │
 ├── .gitignore                      ← Git 忽略规则。已配好：raw/、.enc_key、备份文件
 │                                     🔧 直接可用（如果你用 Git 管理）
-│
-├── reports/                        ← 📊 [自检报告目录]。你运行 Self-Distiller 后，
-│   └── self-check/                    AI 可能在这里写入完整性检查报告
 │
 └── raw/wiki/ 内的 .md 文件          ← 注意：这些是纯文本，AI 可直接读写。
                                       而 raw/ 下的文件建议加密，用 encrypt-raw.sh 管理
@@ -78,10 +80,12 @@ self-distiller-skill-分享版/
 ```
 材料              raw/                   wiki/（提炼结果）
  📄 聊天记录 →  放这里         →  AI →  01-cognition.md
- 🎵 歌单     →  建议加密        →  读取  →  04-voice.md
- 📱 笔记     →                  →  分析  →  05-taste.md
-                                   提取  →  06-memory.md
-                                   写入  →   contradictions.md
+ 🎵 歌单     →  建议加密        →  读取  →  02-decision-mode.md
+ 📱 笔记     →                  →  分析  →  03-value-system.md
+                                   提取  →  04-voice.md
+                                   写入  →  05-taste.md
+                                          →  06-memory.md
+                                          →  contradictions.md
 ```
 
 ### 三步上手
@@ -105,10 +109,11 @@ AI 会自动解密（`./encrypt-raw.sh unlock`）→ 读取 raw/ → 分析 → 
 | 阶段 | 维度 | 功能 | 状态 |
 |------|------|------|------|
 | Phase 1 | 🧠 认知偏好 (01-cognition) | 怎么学、怎么想、怎么处理信息 | 🔧 模板待填充 |
+| Phase 2 | 🤔 决策模式 (02-decision-mode) | 怎么做决定、风险偏好 | 🔧 模板待填充 |
+| Phase 2 | ⚖️ 价值体系 (03-value-system) | 什么重要、道德边界 | 🔧 模板待填充 |
 | Phase 1 | 🗣 说话风格 (04-voice) | 口语习惯、语气词、用词偏好 | 🔧 模板待填充 |
 | Phase 1 | 🎵 品味偏好 (05-taste) | 音乐、视频、内容消费倾向 | 🔧 模板待填充 |
 | Phase 1 | 📅 人生记忆 (06-memory) | 经历、故事、重要节点 | 🔧 模板待填充 |
-| Phase 2 | 🤔 决策模式 / 💎 价值体系 | 理性 vs 直觉 / 什么重要 | ⏳ 待扩展 |
 | Phase 3 | 🎭 完整画像 | 行为、情绪、能力等 | ⏳ 待扩展 |
 
 ---

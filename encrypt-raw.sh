@@ -8,16 +8,44 @@
 #   ./encrypt-raw.sh unlock  # 解密 raw/ 目录（恢复明文）
 #
 # 密钥文件: .enc_key（自动生成，请务必保存）
+#
+# 特性:
+#   - 支持子目录嵌套（raw/subdir/file.md 也会被加密）
+#   - SIGINT/Ctrl+C 时自动清理未完成的解密文件
+#   - 空目录自动创建
 # ==============================================================
 
 set -euo pipefail
 
 KEY_FILE=".enc_key"
 RAW_DIR="raw"
-ENCRYPTED=false
-DECRYPTED=false
 
-# 生成新密钥
+# ----- 清理函数：SIGINT 时删除解密到一半的文件 -----
+CLEANUP_FILES=()
+cleanup() {
+    if [ ${#CLEANUP_FILES[@]} -gt 0 ]; then
+        echo ""
+        echo "⚠️  收到中断信号，清理未完成的文件..."
+        for f in "${CLEANUP_FILES[@]}"; do
+            if [ -f "$f" ]; then
+                rm -f "$f"
+                echo "   🗑️  已删除: $f"
+            fi
+        done
+    fi
+    exit 1
+}
+trap cleanup SIGINT SIGTERM
+
+# ----- 确保 raw/ 目录存在 -----
+ensure_raw_dir() {
+    if [ ! -d "$RAW_DIR" ]; then
+        mkdir -p "$RAW_DIR"
+        echo "📁 已创建 $RAW_DIR/ 目录"
+    fi
+}
+
+# ----- 生成新密钥 -----
 gen_key() {
     if [ ! -f "$KEY_FILE" ]; then
         openssl rand -hex 32 > "$KEY_FILE"
@@ -28,60 +56,66 @@ gen_key() {
     fi
 }
 
-# 加密 raw/ 下的明文文件
+# ----- 加密 raw/ 下的文件（含子目录） -----
 do_encrypt() {
+    ensure_raw_dir
     gen_key
-    local key=$(cat "$KEY_FILE")
-    
-    for f in "$RAW_DIR"/*.md "$RAW_DIR"/*.txt "$RAW_DIR"/*.json "$RAW_DIR"/*.jsonl; do
-        [ -f "$f" ] || continue
+
+    local count=0
+    # 查找所有明文文件（递归子目录）
+    while IFS= read -r -d '' f; do
         local base=$(basename "$f")
-        local enc_file="$RAW_DIR/${base}.enc"
-        
-        # 跳过已加密文件
+        local dir=$(dirname "$f")
+        local enc_file="${dir}/${base}.enc"
+
+        # 跳过已加密的文件
         [ -f "$enc_file" ] && continue
-        
+
         openssl enc -aes-256-cbc -salt -pbkdf2 -iter 100000 \
             -in "$f" -out "$enc_file" -pass "file:$KEY_FILE"
         rm "$f"
-        
-        echo "🔒 已加密: $base"
-        ENCRYPTED=true
-    done
-    
-    if [ "$ENCRYPTED" = false ]; then
-        echo "📭 没有需要加密的明文文件（可能已加密）"
+        echo "🔒 已加密: $f"
+        count=$((count + 1))
+    done < <(find "$RAW_DIR" \( -name '*.md' -o -name '*.txt' -o -name '*.json' -o -name '*.jsonl' -o -name '*.csv' -o -name '*.log' \) -type f -print0)
+
+    if [ "$count" -eq 0 ]; then
+        echo "📭 没有需要加密的明文文件（可能已加密或 raw/ 为空）"
     else
-        echo "✅ raw/ 目录已锁定！使用 ./encrypt-raw.sh unlock 解锁"
+        echo "✅ raw/ 目录已锁定（含子目录）！共加密 $count 个文件"
+        echo "   使用 ./encrypt-raw.sh unlock 解锁"
     fi
 }
 
-# 解密 raw/ 下的加密文件
+# ----- 解密 raw/ 下的加密文件（含子目录） -----
 do_decrypt() {
     if [ ! -f "$KEY_FILE" ]; then
         echo "❌ 未找到密钥文件 $KEY_FILE"
         echo "   请将备份的密钥内容写入 $(pwd)/$KEY_FILE"
         exit 1
     fi
-    
-    local key=$(cat "$KEY_FILE")
-    
-    for f in "$RAW_DIR"/*.enc; do
-        [ -f "$f" ] || continue
-        local base=$(basename "$f" .enc)
-        local dec_file="$RAW_DIR/$base"
-        
+
+    local count=0
+    # 查找所有 .enc 文件（递归子目录）
+    while IFS= read -r -d '' f; do
+        local dec_file="${f%.enc}"
+
+        # 注册清理：中断时删除这个解密到一半的文件
+        CLEANUP_FILES+=("$dec_file")
+
         openssl enc -d -aes-256-cbc -pbkdf2 -iter 100000 \
             -in "$f" -out "$dec_file" -pass "file:$KEY_FILE"
-        
-        echo "🔓 已解密: $base"
-        DECRYPTED=true
-    done
-    
-    if [ "$DECRYPTED" = false ]; then
+
+        # 解密成功，从清理列表移除
+        CLEANUP_FILES=("${CLEANUP_FILES[@]/$dec_file}")
+        echo "🔓 已解密: $dec_file"
+        count=$((count + 1))
+    done < <(find "$RAW_DIR" -name '*.enc' -type f -print0)
+
+    if [ "$count" -eq 0 ]; then
         echo "📭 没有加密文件需要解密"
     else
-        echo "✅ raw/ 目录已解锁！完成后请运行 ./encrypt-raw.sh lock 重新加密"
+        echo "✅ raw/ 目录已解锁（含子目录）！共解密 $count 个文件"
+        echo "   完成后请运行 ./encrypt-raw.sh lock 重新加密"
     fi
 }
 
