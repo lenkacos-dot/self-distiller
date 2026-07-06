@@ -83,7 +83,7 @@ OK
 ```
 
 100% 通过，零失败，零错误。所有修复代码已同步到：
-- GitHub: [`lenkacos-dot/boss-mode`](https://github.com/lenkacos-dot/boss-mode)（commit [`302ebfe`](https://github.com/lenkacos-dot/boss-mode/commit/302ebfe)）
+- GitHub: [`lenkacos-dot/boss-mode`](https://github.com/lenkacos-dot/boss-mode)（commit [`3d1eb5e`](https://github.com/lenkacos-dot/boss-mode/commit/3d1eb5e) — README 修复）
 - Hermes installed skill → Desktop 同步
 - LLM Wiki + Obsidian 知识库镜像
 - 本案例同步到 个人版 & 分享版
